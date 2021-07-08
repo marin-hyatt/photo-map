@@ -9,6 +9,7 @@
 #import "FullImageViewController.h"
 
 @interface FullImageViewController () 
+@property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 @end
 
@@ -17,7 +18,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    self.imageView.image = self.image;
     
 }
 

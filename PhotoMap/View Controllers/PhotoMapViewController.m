@@ -9,6 +9,7 @@
 #import "PhotoMapViewController.h"
 #import "LocationsViewController.h"
 #import "PhotoAnnotation.h"
+#import "FullImageViewController.h"
 
 @interface PhotoMapViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, LocationsDelegate, MKMapViewDelegate>
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
@@ -44,6 +45,9 @@
     if ([segue.identifier isEqualToString:@"tagSegue"]) {
         LocationsViewController *controller = segue.destinationViewController;
         controller.delegate = self;
+    } else if ([segue.identifier isEqualToString:@"fullImageSegue"]) {
+        FullImageViewController *controller = segue.destinationViewController;
+        controller.image = sender;
     }
 }
 
@@ -124,7 +128,18 @@
     PhotoAnnotation *photoAnnotationItem = annotation;
     imageView.image = photoAnnotationItem.photo;
     
+    // Adds button to navigate to full picture
+    annotationView.rightCalloutAccessoryView = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
+    
     return annotationView;
+}
+
+- (void)mapView:(MKMapView *)mapView
+ annotationView:(MKAnnotationView *)view
+calloutAccessoryControlTapped:(UIControl *)control {
+    UIImageView *imageView = (UIImageView*)view.leftCalloutAccessoryView;
+    
+    [self performSegueWithIdentifier:@"fullImageSegue" sender: imageView.image];
 }
 
 
